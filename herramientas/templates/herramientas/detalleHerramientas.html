@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ herramienta.nombre }}</title>
+  {% load humanize %}  <!-- Carga la biblioteca 'humanize' para usar intcomma -->
+</head>
+<body>
+  <div class="container mt-5">
+    <a href="{% url 'home' %}" class="btn btn-secondary mb-3">← Volver al catálogo</a>
+    <div class="card">
+      <img src="{{ herramienta.imagen }}" class="card-img-top" alt="Imagen de la herramienta">
+      <div class="card-body">
+        <h3 class="card-title">{{ herramienta.nombre }}</h3>
+        <p><strong>Precio:</strong> ${{ herramienta.precio|intcomma }}</p>
+        <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
+        <p><strong>Categoría:</strong> {{ herramienta.id_categoria.categoria }}</p> <!-- Muestra el nombre de la categoría -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

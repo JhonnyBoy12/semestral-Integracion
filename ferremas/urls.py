@@ -19,8 +19,8 @@ from django.urls import path, include
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/herramientas/home/', permanent=True)),
+    path('', RedirectView.as_view(url='/home/', permanent=True)),
     path('admin/', admin.site.urls),
-    path('herramientas/', include("herramientas.urls")),
+    path('', include("herramientas.urls")),
     path('auth/', include("autenticacion.urls")),
 ]

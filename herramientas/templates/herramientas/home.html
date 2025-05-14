@@ -92,7 +92,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ herramienta.nombre }}</h5>
                         <p class="card-text">${{herramienta.precio_clp}}</p>
-                        <a href="" class="btn btn-primary">Ver más</a>
+                        <a href="{%url 'herramienta_detalles' herramienta.id %}" class="btn btn-primary mt-auto">Ver más</a>
                     </div>
                 </div>
             </div>
