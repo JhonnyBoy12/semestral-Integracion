@@ -22,4 +22,5 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/herramientas/home/', permanent=True)),
     path('admin/', admin.site.urls),
     path('herramientas/', include("herramientas.urls")),
+    path('auth/', include("autenticacion.urls")),
 ]

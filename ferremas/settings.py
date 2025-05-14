@@ -38,12 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'inventario',
+    'rest_framework',
+    'rest_framework.authtoken',
     'tiendaWeb',
     'herramientas',
     'carrito',
     'ordenes',
+    'autenticacion',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
