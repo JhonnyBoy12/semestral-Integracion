@@ -14,7 +14,7 @@ class Herramienta(models.Model):
     id_categoria = models.ForeignKey("Categoria", on_delete=models.CASCADE, db_column="id_categoria")
     precio = models.IntegerField()
     descripcion = models.CharField(max_length = 350 )
-    imagen = models.CharField(max_length=20)
+    imagen = models.CharField(max_length= 200)
     cantidad = models.IntegerField()
 
     def __str__(self):
