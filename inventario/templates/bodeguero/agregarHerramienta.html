@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Herramienta</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Agregar Nueva Herramienta</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Agregar</button>
+            <a href="{% url 'bodeguero' %}" class="btn btn-secondary">Volver</a>
+        </form>
+    </div>
+</body>
+</html>

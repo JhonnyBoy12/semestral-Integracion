@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,8 @@ SECRET_KEY = 'django-insecure-1-w@mk6#kq**f0-cw96f7gu-rla_*&=0d9r597t%4mp@ogsmus
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ALLOWED_HOSTS = []
 MESSAGE_STORAGE= "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'carrito',
     'ordenes',
     'autenticacion',
+    'inventario',
 ]
 
 REST_FRAMEWORK = {
