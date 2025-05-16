@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: red;
+        }
+        p {
+            font-size: 18px;
+        }
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Ocurrió un error!</h1>
+    <p>{{ message }}</p>
+    <a href="{% url 'carrito' %}">Volver al carrito</a>
+</body>
+</html>

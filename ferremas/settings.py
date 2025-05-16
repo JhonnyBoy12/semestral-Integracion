@@ -27,8 +27,11 @@ SECRET_KEY = 'django-insecure-1-w@mk6#kq**f0-cw96f7gu-rla_*&=0d9r597t%4mp@ogsmus
 DEBUG = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-ALLOWED_HOSTS = ['10.155.85.73', '10.155.85.73:5005']
+ALLOWED_HOSTS = ['127.0.0.1']
 MESSAGE_STORAGE= "django.contrib.messages.storage.cookie.CookieStorage"
+MERCADO_PAGO_ACCESS_TOKEN = "TEST-2329001045685389-051616-3a48cb66eabe35949b723ce19d405ca2-687227693"
+MERCADO_PAGO_PUBLIC_KEY = "TEST-acd5ebf2-35b7-4c1e-b2e0-16e73b6e211b"
+
 
 
 # Application definition
@@ -72,7 +75,7 @@ ROOT_URLCONF = 'ferremas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "TiendaWeb/templates"],
+        'DIRS': [BASE_DIR / "/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

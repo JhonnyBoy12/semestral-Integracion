@@ -62,11 +62,7 @@
                     {% if carrito.items %}
                     <tr>
                         <td colspan="5" class="text-right">
-                            <form action="">
-                                <button type="submit" class="btn btn-primary">
-                                    <h2 class="carro-">Comprar</h2>
-                                </button>
-                            </form>
+                            <a href="{% url 'comprar' %}">Pagar con Mercado Pago</a>
                         </td>
                     </tr>
                     {% endif %}
