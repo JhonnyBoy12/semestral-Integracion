@@ -18,7 +18,7 @@ def agregar_al_carrito(request, herramienta_id):
         }
 
     request.session['carrito'] = carrito
-    return redirect('carrito')
+    return redirect('home')
 
 ## FUNCION AUMENTA CANTIDAD DE UN PRODUCTO DEL CARRITO
 def aumentar_cantidad(request, herramienta_id):
@@ -28,7 +28,7 @@ def aumentar_cantidad(request, herramienta_id):
         carrito[str(herramienta_id)]['cantidad'] += 1
         request.session['carrito'] = carrito
 
-    return redirect('carrito')
+    return redirect('')
 
 ## FUNCION DISMINUYE CANTIDAD DE UN PRODUCTO DEL CARRITO
 def disminuir_cantidad(request, herramienta_id):

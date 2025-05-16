@@ -7,6 +7,38 @@ body {
   height: 100vh;
   margin: 0;
 }
+img{
+  margin-top: 2rem;
+}
+
+.sin-margen {
+  margin-top: 0rem !important;
+}
+
+.home-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #6b3e07;
+  font-size: 1.5rem;
+  z-index: 10;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.home-icon:hover {
+  color: #7d4807;
+}
+
+
+.bienvenida {
+  font-size: 3rem;
+  color: #000000;
+  margin-top: 1px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
 
 .background-blur {
   position: absolute;
@@ -21,12 +53,17 @@ body {
 .login-container {
   position: relative;
   z-index: 2;
-  max-width: 500px;
-  padding: 50px;
+  width: 500px;
+  height: 560px;
+  padding: 40px;
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
 
 .login-header {
   margin-bottom: 30px;
@@ -52,6 +89,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: -1rem;
 }
 
 .form-group label {
@@ -66,16 +104,19 @@ form {
 }
 
 .btn-login {
-  background-color: #007bff;
+  background-color: #bd6c0a;
   color: #ffffff;
   border-radius: 20px;
   padding: 10px 20px;
   margin-top: 20px;
+  margin-bottom: 0;
   width: 100%;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
 .btn-login:hover {
-  background-color: #0056b3;
+  background-color: #7d4807;
 }
 
 .form-text {
@@ -85,7 +126,28 @@ form {
 }
 
 .form-text a {
-  color: #007bff;
+  color: #bd6c0a;
+  transition: color 0.2s ease;
+  font-weight: bold;
+}
+
+.form-text a:hover {
+  color: #6b3e07;
+}
+
+.btn-registrarse {
+  background-color: #bd6c0a;
+  color: #ffffff;
+  border-radius: 15px;
+  padding: 10px 20px;
+  border: none;
+  transition: background-color 0.3s;
+  margin-bottom: 1rem;
+}
+
+.btn-registrarse:hover {
+  background-color: #7d4807;
+  color: #ffffff;
 }
 
 .row.mt-3 {
@@ -100,3 +162,21 @@ form {
     padding: 20px;
   }
 }
+
+.custom-input {
+  border: none;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  font-size: 1rem;
+  width: 100%;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.custom-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #bd6c0a33;
+}
+
+
+

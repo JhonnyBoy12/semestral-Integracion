@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-1-w@mk6#kq**f0-cw96f7gu-rla_*&=0d9r597t%4mp@ogsmus
 DEBUG = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.155.85.73', '10.155.85.73:5005']
 MESSAGE_STORAGE= "django.contrib.messages.storage.cookie.CookieStorage"
 
 
@@ -133,7 +133,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "tiendaWeb/static",

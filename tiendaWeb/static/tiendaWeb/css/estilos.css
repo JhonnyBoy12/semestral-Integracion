@@ -1,0 +1,204 @@
+body {
+    background-color: #ffffff;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #bd6c0a !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.808);
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .offcanvas-title {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link:hover {
+    color: #dddddd !important;
+}
+
+#divnavegador {
+    font-weight: 700;
+    font-size: 1.5rem;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.navbar .btn,
+.navbar .navbar-toggler {
+    z-index: 10;
+}
+
+.navbar .mx-auto {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+
+/* CONTENIDO MENU */
+
+
+.offcanvas-start {
+    background-color: #ffffff !important;
+}
+
+.offcanvas-start .navbar-nav .nav-link {
+    color: #bd6c0a !important;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
+    padding-left: 1.5rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    min-width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.offcanvas-start .navbar-nav .nav-link:hover {
+    background-color: rgba(125, 72, 7, 0.5);
+    color: #7d4807 !important;
+}
+
+.offcanvas-header{
+    background-color: #bd6c0a;
+}
+
+.offcanvas-title {
+    font-weight: 700;
+    color: #bd6c0a;
+    text-align: center;
+    width: 100%;
+    font-family: inherit;
+}
+
+.textobienvenido{
+    width: 100%;
+    color: #bd6c0a !important;
+    font-weight: 670;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.offcanvas-body .btn-outline-success {
+    background-color: #ffffff;
+    color: #bd6c0a;
+    border-color: #bd6c0a;
+    font-weight: 600;
+}
+
+.offcanvas-body .btn-outline-success:hover {
+    background-color: #bd6c0a;
+    color: #ffffff;
+    border-color: #bd6c0a;
+}
+
+.btn-outline-danger {
+    background-color: #ffffff;
+    color: #dc3545;
+    border-color: #dc3545;
+    font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+    border-color: #dc3545;
+}
+
+.btn-outline-success {
+    font-weight: 600;
+    border-radius: 8px;
+  }
+
+
+/* BOTÓN CARRITO */
+.btn-outline-success {
+    background-color: #ffffff;
+    color: #bd6c0a;
+    border-color: #ffffff;
+}
+
+.btn-outline-success:hover {
+    background-color: #7d4807;
+    color: #ffffff;
+    border-color: #7d4807;
+}
+
+/* BOTÓN MENÚ (ICONO TRES LÍNEAS) */
+.navbar-toggler {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+    background-image: none;
+    position: relative;
+    height: 1.5em;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon div {
+    content: '';
+    position: absolute;
+    left: 0.3em;
+    right: 0.3em;
+    height: 3px;
+    background-color: #bd6c0a;
+    border-radius: 1px;
+}
+
+.navbar-toggler-icon::before {
+    top: 0.4em;
+}
+
+.navbar-toggler-icon::after {
+    top: 0.9em;
+}
+
+.navbar-toggler-icon div {
+    top: 1.4em;
+}
+
+/* CATÁLOGO */
+.catalogo h1 {
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+    font-weight: bold;
+}
+
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #084298;
+    border-color: #084298;
+}
