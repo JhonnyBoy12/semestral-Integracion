@@ -1,0 +1,86 @@
+{% load humanize %}
+
+<h1>Tu Carrito</h1>
+
+<div class="row" style="padding: 10px 40px 0 40px;">
+    <div class="container1">
+        {% if user.is_authenticated %}
+        <div class="button-container" style="padding: 0 0 15px 0;">
+            <a href="{% url 'vaciar_carrito' %}">
+                <button class="rounded-5" style="background-color: #7C7C7C; color: white;">Limpiar Carrito</button>
+            </a>
+            <a href="{% url 'home' %}">
+                <button class="rounded-5" style="background-color: #7C7C7C; color: white;">Seguir Comprando</button>
+            </a>
+        </div>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in carrito.items %}
+                    <tr>
+                        <td><img src="{{ value.imagen }}" alt="Imagen" class="imagenCarro" style="width: 60px;"></td>
+                        <td><h2 class="carro-name">{{ value.nombre }}</h2></td>
+                        <td><h2 class="carro-text">${{ value.precio|floatformat:0|intcomma }}</h2></td>
+                        <td>
+                            <h2 class="carro-text">
+                                <a href="{% url 'disminuir_cantidad' key %}" class="btn btn-sm btn-danger">-</a>
+                                {{ value.cantidad }}
+                                <a href="{% url 'aumentar_cantidad' key %}" class="btn btn-sm btn-success">+</a>
+                            </h2>
+                        </td>
+                        <td>
+                            <a href="{% url 'eliminar_producto' key %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td></td>
+                        <td colspan="5">
+                            <h1 style="font-size: 2rem; font-weight: bold; padding: 100px 0 100px 200px; display: inline-block;">
+                                No hay ninguna herramienta en el carrito
+                            </h1>
+                            <a href="{% url 'home' %}" class="btn btn-primary" style="display: inline-block; margin-left: 45px;">Ir a comprar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <h2 class="carro-text">Total: ${{ total|floatformat:0|intcomma }}</h2>
+                        </td>
+                    </tr>
+                    {% if carrito.items %}
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <form action="">
+                                <button type="submit" class="btn btn-primary">
+                                    <h2 class="carro-">Comprar</h2>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <br>
+        <div class="alert alert-warning" role="alert">
+            <h1 style="text-align: center; padding-top: 50px;">Debes iniciar sesión para ver y gestionar tu carrito de compras.</h1>
+            <br><br>
+            <a href="{% url 'login' %}" class="btn btn-primary" style="display: flex; justify-content: center;">Iniciar Sesión</a>
+            <br>
+        </div>
+        {% endif %}
+    </div>
+</div>

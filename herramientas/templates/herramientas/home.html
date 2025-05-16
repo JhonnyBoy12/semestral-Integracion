@@ -72,7 +72,7 @@
                 <!-- Sección para el Carrito -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{% url 'carrito' %}">
                             <h2>🛒</h2>
                         </a>
                     </li>
@@ -88,7 +88,11 @@
             {% for herramienta in herramientas %}
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
                 <div class="card h-100">
-                    <img src="{{ herramienta.imagen }}" alt="Imagen de Comic" class="card-img-top">
+                    {% if herramienta.imagen %}
+                        <img src="{{ herramienta.imagen.url }}" alt="Imagen de Comic" class="card-img-top">
+                     {% else %}
+                        <p>Sin Imagen Disponible</p>
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ herramienta.nombre }}</h5>
                         <p class="card-text">${{herramienta.precio_clp}}</p>

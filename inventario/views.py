@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .forms import HerramientaForm
 # Create your views here.
 
+## VER HERRAMIENTAS
 def verHerramientas(request):
     herramientas = Herramienta.objects.all()
     for herramienta in herramientas:
@@ -11,10 +12,12 @@ def verHerramientas(request):
     context ={"herramientas":herramientas }
     return render(request, 'bodeguero/bodeguero.html',{'herramientas' : herramientas})
 
+## FUNCION CONSULTA DE STOCK BASE DE DATOS
 def consultarStock(request, herramienta_id): ##Web Service de Consultar Stock
     herramienta = get_object_or_404(Herramienta, pk=herramienta_id )
     return render(request, 'bodeguero/mostrar_stock.html', {'herramienta' : herramienta})
 
+## FUNCION AUMENTA STOCK DATO DE HERRAMIENTA SEGUN ID DE HERRAMIENTA
 def aumentarStock(request, herramienta_id): 
     herramienta = get_object_or_404(Herramienta, pk=herramienta_id)
     if request.method == "POST":
@@ -23,6 +26,7 @@ def aumentarStock(request, herramienta_id):
         return redirect('mostrar_stock', herramienta_id=herramienta_id)
     return HttpResponse("Error", status=405)
 
+## FUNCION AGREGA HERRAMIENTRA MEDIANTE METODO POST
 def agregarHerramienta(request):
     if request.method == 'POST':
         form = HerramientaForm(request.POST, request.FILES)

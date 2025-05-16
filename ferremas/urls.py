@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include("herramientas.urls")),
     path('inventario/', include('inventario.urls')),
     path('auth/', include("autenticacion.urls")),
+    path('carrito/', include('carrito.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
