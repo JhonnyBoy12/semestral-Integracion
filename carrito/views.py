@@ -1,8 +1,12 @@
 from django.shortcuts import redirect, get_object_or_404, render
 from herramientas.models import Herramienta
-import stripe
+from .carrito import Carrito
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db import transaction
+from ordenes.models import Orden, ItemOrden
+from django.contrib import messages
+import stripe
 ## FUNCION AGREGA PRODUCTO A CARRITO
 def agregar_al_carrito(request, herramienta_id):
     herramienta = get_object_or_404(Herramienta, pk=herramienta_id)
@@ -68,8 +72,8 @@ def ver_carrito(request):
 
 
 def exito(request):
-    # Aquí puedes vaciar carrito o mostrar info
-    request.session['carrito'] = {}
+
+    # Si no es POST
     return render(request, 'carrito/exito.html')
 
 def fallo(request):
@@ -82,6 +86,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @login_required
 def comprar(request):
+    carrito = Carrito(request)
     items = request.session.get('carrito', {})
     total = sum(item['precio'] * item['cantidad'] for item in items.values())
 
@@ -106,8 +111,61 @@ def comprar(request):
             success_url=request.build_absolute_uri('/carrito/exito/'),
             cancel_url=request.build_absolute_uri('/carrito/fallo/'),
         )
-        # Vaciar el carrito después de crear la sesión
         return redirect(session.url, code=303)
 
     except stripe.error.CardError:
         return render(request, 'carrito/error.html', {'message': 'Error al procesar el pago con Stripe.'})
+
+@login_required
+def procesar_compra(request):
+    carrito = Carrito(request)
+
+    if request.method == 'POST':
+        if not carrito.carro:
+            messages.error(request, "El carrito está vacío.")
+            return redirect("carrito:ver_carrito")  # Ajusta este nombre según tu URL
+
+        total = 0
+        cantidad_total = 0
+
+        try:
+            with transaction.atomic():
+                # Verifica stock y prepara datos
+                for key, item in carrito.carro.items():
+                    herramienta = Herramienta.objects.get(id=key)
+
+                    if herramienta.cantidad < item['cantidad']:
+                        messages.error(request, f"No hay suficiente stock para {herramienta.nombre}.")
+                        return redirect("carrito:ver_carrito")
+
+                    total += item['precio'] * item['cantidad']
+                    cantidad_total += item['cantidad']
+
+                # Crear orden
+                orden = Orden.objects.create(
+                    usuario=request.user,
+                    total_precio=total,
+                    cantidad_herramientas=cantidad_total
+                )
+
+                # Crear ítems y actualizar stock
+                for key, item in carrito.carro.items():
+                    herramienta = Herramienta.objects.get(id=key)
+
+                    ItemOrden.objects.create(
+                        orden=orden,
+                        herramienta=herramienta,
+                        cantidad=item['cantidad'],
+                        precio=item['precio']
+                    )
+
+                    herramienta.cantidad -= item['cantidad']
+                    herramienta.save()
+
+                carrito.limpiar()
+                messages.success(request, "Compra realizada exitosamente.")
+                return redirect("misPedidos")  # Ajusta a la URL de tus pedidos
+
+        except Exception as e:
+            messages.error(request, f"Ocurrió un error: {str(e)}")
+            return redirect("home")
