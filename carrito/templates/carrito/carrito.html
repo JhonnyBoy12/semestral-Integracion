@@ -34,7 +34,7 @@
                             <h2 class="carro-text">
                                 <a href="{% url 'disminuir_cantidad' key %}" class="btn btn-sm btn-danger">-</a>
                                 {{ value.cantidad }}
-                                <a href="{% url 'aumentar_cantidad' key %}" class="btn btn-sm btn-success">+</a>
+                                <a href="{% url 'aumentar_cantidad' key  %}" class="btn btn-sm btn-success">+</a>
                             </h2>
                         </td>
                         <td>
@@ -62,7 +62,11 @@
                     {% if carrito.items %}
                     <tr>
                         <td colspan="5" class="text-right">
-                            <a href="{% url 'comprar' %}">Pagar con Mercado Pago</a>
+                            <!-- Botón para pagar con Stripe -->
+                            <form action="{% url 'comprar' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Pagar con Stripe</button>
+                            </form>
                         </td>
                     </tr>
                     <tr>

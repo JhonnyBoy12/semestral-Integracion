@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import stripe
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,9 +29,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ALLOWED_HOSTS = ['127.0.0.1']
 MESSAGE_STORAGE= "django.contrib.messages.storage.cookie.CookieStorage"
-MERCADO_PAGO_ACCESS_TOKEN = "APP_USR-935210734170944-051622-0efdc21eb377b6c028ea0aaea5cacde2-2442030811"
-MERCADO_PAGO_PUBLIC_KEY = "APP_USR-cf67bc38-e0b1-4e04-8623-862089b589e5"
+STRIPE_SECRET_KEY = 'sk_test_51RPnbPRER8o1yaEL2FNaV1uZakoEVC5ZWHjhfj2izFdr31OkVYEgA4coRkQVXEtCluxwdw02aOHSDbmxFQAXj0h400TMbRplTT'  # Reemplaza con tu clave secreta
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51RPnbPRER8o1yaELUwmPdBRGmdOuK1WsP83mOM0FjXVeonqUqnbLwNhKfv44TrEWJhHRd1KqNKEJLHW9fzdNNkJ300gkd93cJ9'  # Reemplaza con tu clave pública
 
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 # Application definition
