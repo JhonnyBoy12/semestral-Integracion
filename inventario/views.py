@@ -36,3 +36,23 @@ def agregarHerramienta(request):
     else:
         form=HerramientaForm()
     return render(request, 'bodeguero/agregarHerramienta.html', {'form':form})
+
+## FUNCION EDITA DATOS DE HERRAMIENTA MEDIANTE METODO POST
+def editarHerramienta(request, herramienta_id):
+    herramienta = get_object_or_404(Herramienta, pk=herramienta_id)
+
+    if request.method == 'POST':
+        herramienta.nombre = request.POST.get('nombre')
+        herramienta.precio = request.POST.get('precio')
+        herramienta.cantidad = request.POST.get('cantidad')
+
+        if 'imagen' in request.FILES:
+            herramienta.imagen = request.FILES['imagen']
+
+        herramienta.save()
+        return redirect('mostrar_stock', herramienta_id=herramienta.id)
+    else:
+        categorias = Categoria.objects.all()
+        return render(request, 'bodeguero/editar_herramienta.html', {
+            'herramienta': herramienta,
+        })
