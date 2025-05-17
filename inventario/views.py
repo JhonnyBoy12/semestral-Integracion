@@ -1,16 +1,23 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from herramientas.models import Herramienta, Categoria
+from django.contrib.auth.models import User
+from ordenes.models import Orden
 from django.http import HttpResponse
 from .forms import HerramientaForm
 # Create your views here.
 
-## VER HERRAMIENTAS
-def verHerramientas(request):
+def ver_usuarios_y_ordenes(request):
+    usuarios = User.objects.prefetch_related('orden_set__items')
     herramientas = Herramienta.objects.all()
+
     for herramienta in herramientas:
         herramienta.precio_clp = "{:,}".format(herramienta.precio)
-    context ={"herramientas":herramientas }
-    return render(request, 'bodeguero/bodeguero.html',{'herramientas' : herramientas})
+
+    context = {
+        'usuarios': usuarios,
+        'herramientas': herramientas,
+    }
+    return render(request, 'bodeguero/bodeguero.html', context)
 
 ## FUNCION CONSULTA DE STOCK BASE DE DATOS
 def consultarStock(request, herramienta_id): ##Web Service de Consultar Stock

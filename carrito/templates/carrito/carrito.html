@@ -65,6 +65,14 @@
                             <a href="{% url 'comprar' %}">Pagar con Mercado Pago</a>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <form action="{% url 'procesar_compra' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Guardar orden BD</button>
+                            </form>
+                        </td>
+                    </tr>
                     {% endif %}
                 </tbody>
             </table>

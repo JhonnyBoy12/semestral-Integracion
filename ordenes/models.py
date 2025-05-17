@@ -7,7 +7,7 @@ class Orden(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     total_precio = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad_herramientas = models.IntegerField()
-    fehca = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self): ##devuelve cadena con el campo id y username
         return f"Orden {self.id} de {self.usuario.username}" 
