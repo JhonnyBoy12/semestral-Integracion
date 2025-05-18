@@ -34,9 +34,9 @@
 <body>
     <h1>¡Compra realizada con éxito!</h1>
     <p>Gracias por tu compra en Ferremas. Tu pedido está siendo procesado.</p>
-    <form action="{% url 'home' %}" method="post">
+    <form action="{% url 'misPedidos' %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-success">Ver Pedidos</button>
+        <button type="submit" class="btn btn-success">realizado</button>
     </form>
 </body>
 </html>

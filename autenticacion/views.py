@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from inventario.models import Profile
 from django.shortcuts import render, redirect
 
 
-## FUNCION DE REGISTRO DE USURIOS CON "POST" WS
+from inventario.models import Profile  # Asegúrate de tener este import
+
 def registro_usuario(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -13,21 +15,20 @@ def registro_usuario(request):
         contra2 = request.POST.get('contra2')
 
         if not all([username, email, contra, contra2]):
-            return render(request, 'registro.html', {'error': 'Todos los campos son obligatorios.'})
+            return render(request, 'autenticacion/registro.html', {'error': 'Todos los campos son obligatorios.'})
 
         if contra != contra2:
-            return render(request, 'registro.html', {'error': 'Las contraseñas no coinciden.'})
+            return render(request, 'autenticacion/registro.html', {'error': 'Las contraseñas no coinciden.'})
 
         if User.objects.filter(username=username).exists():
-            return render(request, 'registro.html', {'error': 'El nombre de usuario ya existe.'})
+            return render(request, 'autenticacion/registro.html', {'error': 'El nombre de usuario ya existe.'})
 
         if User.objects.filter(email=email).exists():
-            return render(request, 'registro.html', {'error': 'El correo ya está en uso.'})
+            return render(request, 'autenticacion/registro.html', {'error': 'El correo ya está en uso.'})
 
+        # Solo creas el usuario, lo demás lo hace la señal
         user = User.objects.create_user(username=username, email=email, password=contra)
-        Token.objects.get_or_create(user=user)  # genera token
-
-        return redirect('login')  # Cambia 'login' por el nombre correcto de tu URL de inicio de sesión
+        return redirect('login')
 
     return render(request, 'autenticacion/registro.html')
 
@@ -37,15 +38,25 @@ def iniciar_sesion(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)  # Login clásico de Django
-            token, created = Token.objects.get_or_create(user=user)  # genera o recupera token
-            request.session['token'] = token.key  # lo puedes guardar en la sesión si quieres usarlo
-            return redirect('home')  # redirige a la página principal
+        if not User.objects.filter(username=username).exists():
+            error = 'El usuario no existe.'
         else:
-            return render(request, 'autenticacion/login.html', {'error': 'Credenciales inválidas.'})
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                token, created = Token.objects.get_or_create(user=user)
+                request.session['token'] = token.key
+
+                # Verifica el rol del usuario
+                perfil = Profile.objects.get(user=user)
+                if perfil.rol == 'bodeguero':
+                    return redirect('bodeguero')  # Asegúrate de que esta URL esté configurada en urls.py
+                else:
+                    return redirect('home')
+            else:
+                error = 'La contraseña es incorrecta.'
+
+        return render(request, 'autenticacion/inicioSesion.html', {'error': error})
 
     return render(request, 'autenticacion/inicioSesion.html')
 

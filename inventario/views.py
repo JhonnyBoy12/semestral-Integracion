@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from .forms import HerramientaForm
 # Create your views here.
 
+
+
 def ver_usuarios_y_ordenes(request):
     usuarios = User.objects.prefetch_related('orden_set__items')
     herramientas = Herramienta.objects.all()

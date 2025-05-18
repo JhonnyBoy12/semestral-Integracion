@@ -6,7 +6,11 @@ from django.conf import settings
 from django.db import transaction
 from ordenes.models import Orden, ItemOrden
 from django.contrib import messages
+
 import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 ## FUNCION AGREGA PRODUCTO A CARRITO
 def agregar_al_carrito(request, herramienta_id):
     herramienta = get_object_or_404(Herramienta, pk=herramienta_id)
@@ -72,17 +76,57 @@ def ver_carrito(request):
 
 
 def exito(request):
+    carrito = Carrito(request)
 
-    # Si no es POST
-    return render(request, 'carrito/exito.html')
+    if not carrito.carro:
+        return render(request, 'carrito/exito.html', {'mensaje': "El carrito ya fue procesado o está vacío."})
+
+    total = 0
+    cantidad_total = 0
+
+    try:
+        with transaction.atomic():
+            for key, item in carrito.carro.items():
+                herramienta = Herramienta.objects.get(id=key)
+
+                if herramienta.cantidad < item['cantidad']:
+                    messages.error(request, f"No hay suficiente stock para {herramienta.nombre}.")
+                    return redirect("carrito:ver_carrito")
+
+                total += item['precio'] * item['cantidad']
+                cantidad_total += item['cantidad']
+
+            orden = Orden.objects.create(
+                usuario=request.user,
+                total_precio=total,
+                cantidad_herramientas=cantidad_total
+            )
+
+            for key, item in carrito.carro.items():
+                herramienta = Herramienta.objects.get(id=key)
+
+                ItemOrden.objects.create(
+                    orden=orden,
+                    herramienta=herramienta,
+                    cantidad=item['cantidad'],
+                    precio=item['precio']
+                )
+
+                herramienta.cantidad -= item['cantidad']
+                herramienta.save()
+
+            carrito.limpiar()
+
+        return render(request, 'carrito/exito.html', {'mensaje': "Compra procesada exitosamente."})
+
+    except Exception as e:
+        messages.error(request, f"Ocurrió un error al procesar la compra: {str(e)}")
+        return redirect("home")
+
 
 def fallo(request):
     return render(request, 'carrito/fallo.html')
 
-#def pendiente(request):
-    #return render(request, 'carrito/pendiente.html')
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @login_required
 def comprar(request):
@@ -116,56 +160,3 @@ def comprar(request):
     except stripe.error.CardError:
         return render(request, 'carrito/error.html', {'message': 'Error al procesar el pago con Stripe.'})
 
-@login_required
-def procesar_compra(request):
-    carrito = Carrito(request)
-
-    if request.method == 'POST':
-        if not carrito.carro:
-            messages.error(request, "El carrito está vacío.")
-            return redirect("carrito:ver_carrito")  # Ajusta este nombre según tu URL
-
-        total = 0
-        cantidad_total = 0
-
-        try:
-            with transaction.atomic():
-                # Verifica stock y prepara datos
-                for key, item in carrito.carro.items():
-                    herramienta = Herramienta.objects.get(id=key)
-
-                    if herramienta.cantidad < item['cantidad']:
-                        messages.error(request, f"No hay suficiente stock para {herramienta.nombre}.")
-                        return redirect("carrito:ver_carrito")
-
-                    total += item['precio'] * item['cantidad']
-                    cantidad_total += item['cantidad']
-
-                # Crear orden
-                orden = Orden.objects.create(
-                    usuario=request.user,
-                    total_precio=total,
-                    cantidad_herramientas=cantidad_total
-                )
-
-                # Crear ítems y actualizar stock
-                for key, item in carrito.carro.items():
-                    herramienta = Herramienta.objects.get(id=key)
-
-                    ItemOrden.objects.create(
-                        orden=orden,
-                        herramienta=herramienta,
-                        cantidad=item['cantidad'],
-                        precio=item['precio']
-                    )
-
-                    herramienta.cantidad -= item['cantidad']
-                    herramienta.save()
-
-                carrito.limpiar()
-                messages.success(request, "Compra realizada exitosamente.")
-                return redirect("misPedidos")  # Ajusta a la URL de tus pedidos
-
-        except Exception as e:
-            messages.error(request, f"Ocurrió un error: {str(e)}")
-            return redirect("home")
