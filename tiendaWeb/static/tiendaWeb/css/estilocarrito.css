@@ -1,0 +1,37 @@
+.carrito-container .carrito-card {
+    border: 1px solid #ddd !important;
+    border-radius: 15px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    transition: transform 0.3s !important;
+    background-color: #fff !important;
+}
+
+.carrito-container .carrito-card:hover {
+    transform: translateY(-5px) !important;
+}
+
+.carrito-container .btnuniversal,
+.carrito-container .btnuniversal.btn-sm {
+    background-color: #bd6c0a !important;
+    color: white !important;
+    border-radius: 25px !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.carrito-container .btnuniversal:hover,
+.carrito-container .btnuniversal.btn-sm:hover {
+    background-color: #7d4807 !important;
+    color: white !important;
+}
+
+.carrito-container .btn-danger {
+    border-radius: 25px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.carrito-container .btn-danger:hover {
+    background-color: #7d4807 !important;
+    border-color: #7d4807 !important;
+    color: white !important;
+}

@@ -1,0 +1,61 @@
+h1{
+    font-weight: bold;
+    color: #bd6c0a;
+    text-align: start;
+    margin-left: 2rem;
+    margin-top: 5rem;
+    font-size: 2rem;
+}
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-ver-producto {
+    background-color: #bd6c0a;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8px;
+}
+
+.btn-ver-producto:hover {
+    background-color: #7d4807;
+    transform: translateY(-2px);
+}
+
+.table {
+    margin-top: 2rem;
+    background-color: #fff;
+}
+
+.table th {
+    background-color: #bd6c0a;
+    color: white;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.collapse {
+    background-color: #f8f9fa;
+    padding: 1rem;
+}

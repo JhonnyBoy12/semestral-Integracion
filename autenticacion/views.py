@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from inventario.models import Profile
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
 
 from inventario.models import Profile  # Asegúrate de tener este import
 
@@ -47,10 +47,11 @@ def iniciar_sesion(request):
                 token, created = Token.objects.get_or_create(user=user)
                 request.session['token'] = token.key
 
-                # Verifica el rol del usuario
                 perfil = Profile.objects.get(user=user)
                 if perfil.rol == 'bodeguero':
-                    return redirect('bodeguero')  # Asegúrate de que esta URL esté configurada en urls.py
+                    # Redirige con un token de sesión único
+                    request.session['bodeguero_access'] = True
+                    return redirect('bodeguero')
                 else:
                     return redirect('home')
             else:
@@ -63,8 +64,28 @@ def iniciar_sesion(request):
 from django.contrib.auth import logout
 
 ##FUNCION PARA CERRAR SESION Y ELIMINAR TOKEN NO QUEDE REGISTRADO
+@login_required  # Asegura que solo usuarios autenticados puedan cerrar sesión
 def cerrar_sesion(request):
-    if request.user.is_authenticated:
-        Token.objects.filter(user=request.user).delete()  # eliminar el token si existe
-        logout(request)  # cerrar sesión
-    return redirect('login')  # redirigir al login
+    try:
+        # 1. Eliminar el token de autenticación (si existe)
+        if request.user.is_authenticated:
+            Token.objects.filter(user=request.user).delete()
+        
+        # 2. Limpiar variables de sesión
+        session_keys_to_delete = ['token', 'bodeguero_access']
+        for key in session_keys_to_delete:
+            if key in request.session:
+                del request.session[key]
+        
+        # 3. Cerrar sesión y limpiar
+        logout(request)
+        request.session.flush()
+        
+        # 4. Redirigir al login
+        return redirect('login')
+    
+    except Exception as e:
+        # Si ocurre algún error, igualmente cerramos sesión
+        logout(request)
+        request.session.flush()
+        return redirect('login')

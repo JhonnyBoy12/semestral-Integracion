@@ -1,32 +1,97 @@
 {% extends "tiendaweb/base.html" %}
 
-{% block title %}FerreMas{% endblock %}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
 
-  <h1>CATALOGO</h1>
-     <div class="catalogo">
-        <div class="container1 mt-5">
-            <div class="row">
-            {% for herramienta in herramientas %}
+{% load static %}
+
+<h1 class="textobienvenidos">¡BIENVENIDOS A FERREMAS!</h1>
+
+<div class="info-tarjeta mx-4 my-4 p-4 text-white text-center">
+    <p class="mt-3">
+        En FERREMAS llevamos más de 20 años ofreciendo productos de ferretería de la mejor calidad para hogares y
+        profesionales.
+        Nuestro compromiso es brindar herramientas confiables, atención personalizada y precios accesibles para que
+        siempre encuentres
+        lo que necesitas. ¡Gracias por confiar en nosotros!
+    </p>
+</div>
+
+<div id="carouselExampleInterval" class="carousel slide fixed-carousel px-4" data-bs-ride="carousel"
+    style="margin-top: 2rem;">
+    <div class="carousel-inner rounded overflow-hidden" style="height: 400px;">
+        <div class="carousel-item active" data-bs-interval="3000">
+            <img src="{% static 'tiendaWeb/img/carrusel1.jpeg' %}" class="d-block w-100 h-100 object-fit-cover"
+                alt="carrusel">
+        </div>
+        <div class="carousel-item" data-bs-interval="3000">
+            <img src="{% static 'tiendaWeb/img/carrusel2.jpg' %}" class="d-block w-100 h-100 object-fit-cover"
+                alt="carrusel">
+        </div>
+        <div class="carousel-item" data-bs-interval="3000">
+            <img src="{% static 'tiendaWeb/img/carrusel3.jpg' %}" class="d-block w-100 h-100 object-fit-cover"
+                alt="carrusel">
+        </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<h1 class="textomarcas">NUESTRAS MARCAS</h1>
+
+<div class="marca-container">
+    <img class="imgmarcas" src="{% static 'tiendaWeb/img/marcas1.png' %}" alt="marcas">
+</div>
+
+<div class="col-12 mb-4" style="display: flex;justify-content:center">
+        <a href="{% url 'catalogo' %}" class="btn fw-bold catalogo-btn">
+            Ir al catálogo 🛠️
+        </a>
+</div>
+
+<div class="catalogo-home">
+    <div class="container1 px-4">
+        <div class="row justify-content-center">
+            {% for herramienta in herramientas|slice:":6" %}
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 d-flex flex-column">
                     {% if herramienta.imagen %}
-                        <img src="{{ herramienta.imagen.url }}" alt="Imagen de Comic" class="card-img-top">
-                     {% else %}
-                        <p>Sin Imagen Disponible</p>
+                    <img src="{{ herramienta.imagen.url }}" alt="Imagen" class="card-img-top">
+                    {% else %}
+                    <p>Sin Imagen</p>
                     {% endif %}
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ herramienta.nombre }}</h5>
-                        <p class="card-text">${{herramienta.precio_clp}}</p>
-                        <a href="{%url 'herramienta_detalles' herramienta.id %}" class="btn btn-primary mt-auto">Ver más</a>
+                        <p class="card-text">${{ herramienta.precio_clp }}</p>
+                        <div class="mt-auto">
+                            <a href="{% url 'herramienta_detalles' herramienta.id %}"
+                                class="btn btn-ver-producto w-100">Ver producto</a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
-            </div>
         </div>
     </div>
+</div>
+
+<script>
+    var myCarousel = document.querySelector('#ferremasCarousel');
+    var carousel = new bootstrap.Carousel(myCarousel, {
+        interval: 4000,
+        ride: 'carousel'
+    });
+</script>
+
 </body>
 
- {% endblock %}
+{% endblock %}

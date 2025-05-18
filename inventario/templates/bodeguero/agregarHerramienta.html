@@ -15,5 +15,12 @@
             <a href="{% url 'bodeguero' %}" class="btn btn-secondary">Volver</a>
         </form>
     </div>
+
+    {% if not request.user.is_authenticated or not request.user.profile.rol == 'bodeguero' %}
+    <script>
+        window.location.href = "{% url 'home' %}";
+    </script>
+    {% endif %}
+
 </body>
 </html>

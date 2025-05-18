@@ -1,49 +1,58 @@
 {% extends "tiendaweb/base.html" %}
 
-{% block title %}Infromacion Herramienta{% endblock %}
+{% block title %} Detalle - {{ herramienta.nombre }}{% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ herramienta.nombre }}</title>
-  {% load humanize %}  <!-- Carga la biblioteca 'humanize' para usar intcomma -->
-</head>
-<body>
-  <div class="container mt-5">
-    <a href="{% url 'home' %}" class="btn btn-secondary mb-3">← Volver al catálogo</a>
-    <div class="card">
-      {% if herramienta.imagen %}
-        <img src="{{ herramienta.imagen.url }}" class="card-img-top" alt="Imagen de la herramienta">
-      {% else %}
-        <p>Sin Imagen Disponible</p>
-      {% endif %}
-      <div class="card-body">
-        <h3 class="card-title">{{ herramienta.nombre }}</h3>
-        <p><strong>Precio:</strong> ${{ herramienta.precio|intcomma }}</p>
-        <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
-        <p><strong>Categoría:</strong> {{ herramienta.id_categoria.categoria }}</p> <!-- Muestra el nombre de la categoría -->
+
+{% load static %}
+
+{% load humanize %}
+
+    <link rel="stylesheet" href="{% static 'tiendaWeb/css/estilodetalle.css' %}">
+
+<div class="container mt-5">
+  <a href="{% url 'catalogo' %}" class="btn mb-4 btnvolver">
+    ← Volver al catálogo
+  </a>
+
+  <div class="card shadow-sm detalle-card">
+    {% if herramienta.imagen %}
+      <img src="{{ herramienta.imagen.url }}" class="card-img-top" alt="Imagen de la herramienta">
+    {% else %}
+      <div class="no-image-placeholder d-flex justify-content-center align-items-center">
+        <p class="text-muted">Sin Imagen Disponible</p>
       </div>
-      {% if herramienta.cantidad > 0 %}
-        {% if user.is_authenticated %}
-            <a href="{% url 'agregar_al_carrito' herramienta.id %}">
-                <button class="rounded-5 w-50 p-2 fs-6" style="background-color: #7C7C7C; color: white;">Añadir al Carro</button>
+    {% endif %}
+
+    <div class="card-body">
+      <h3 class="card-title mb-3">{{ herramienta.nombre }}</h3>
+
+      <p class="precio fw-bold mb-3">$ {{ herramienta.precio|intcomma }}</p>
+
+      <p><strong>Descripción:</strong> {{ herramienta.descripcion }}</p>
+
+      <p><strong>Categoría:</strong> {{ herramienta.id_categoria.categoria }}</p>
+
+      <div class="mt-4 d-flex justify-content-center align-items-center">
+        {% if herramienta.cantidad > 0 %}
+          {% if user.is_authenticated %}
+            <a href="{% url 'agregar_al_carrito' herramienta.id %}" class="btn btn-lg rounded-pill px-5 detalle-btn">
+              Añadir al Carro
             </a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-lg rounded-pill px-5 detalle-btn">
+              Inicia Sesión para Añadir al Carro
+            </a>
+          {% endif %}
         {% else %}
-            <a href="{% url 'login' %}">
-                <button class="rounded-5 w-50 p-2 fs-6" style="background-color: #7C7C7C; color: white;">Inicia Sesión para Añadir al Carro</button>
-            </a>
-        {% endif %}    
-      {% else %}
-        <h5 style="color: red;">No hay stock suficiente</h5>
-          <a href="{% url 'home' %}">
-              <button class="rounded-5 w-50 p-2 fs-6" style="background-color: #7C7C7C; color: white;">Seguir Comprando</button>
+          <h5 class="text-danger me-3">No hay stock suficiente</h5>
+          <a href="{% url 'catalogo' %}" class="btn btn-lg rounded-pill px-5 detalle-btn">
+            Seguir Comprando
           </a>
-      {% endif %}
+        {% endif %}
+      </div>
     </div>
   </div>
-</body>
-
- {% endblock %}
+</div>
+{% endblock %}
 

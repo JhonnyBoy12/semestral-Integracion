@@ -1,0 +1,81 @@
+{% extends "tiendaweb/base.html" %}
+
+{% block title %}Catálogo{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<form method="GET" action="{% url 'catalogo' %}" class="mb-3" style="margin: 0 3rem; margin-top: 5rem;">
+    <div class="input-group shadow-sm" style="border-radius: 2rem; overflow: hidden;">
+        <input type="text" name="q" class="form-control" placeholder="Buscar herramienta..."
+            value="{{ query|default:'' }}" style="border: none; border-radius: 0; padding: 0.75rem 1rem;">
+        <button class="btn btn-buscar" type="submit">
+            Buscar
+        </button>
+    </div>
+</form>
+
+<form method="get" class="orden-form mb-4" style="margin: 0 3rem;">
+    <label for="orden">Ordenar por:</label>
+    <select name="orden" id="orden" onchange="this.form.submit()"
+        style="border-radius: 20px; box-shadow: 0 0 5px rgba(0,0,0,0.2); padding: 0.3rem 1rem;">
+        
+        <option value="" {% if not orden_actual %}selected{% endif %}>Predeterminado</option>
+        
+        {% if orden_actual == "nombre_asc" %}
+        <option value="nombre_asc" selected>Nombre A-Z</option>
+        {% else %}
+        <option value="nombre_asc">Nombre A-Z</option>
+        {% endif %}
+        
+        {% if orden_actual == "nombre_desc" %}
+        <option value="nombre_desc" selected>Nombre Z-A</option>
+        {% else %}
+        <option value="nombre_desc">Nombre Z-A</option>
+        {% endif %}
+        
+        {% if orden_actual == "precio_asc" %}
+        <option value="precio_asc" selected>Precio menor a mayor</option>
+        {% else %}
+        <option value="precio_asc">Precio menor a mayor</option>
+        {% endif %}
+        
+        {% if orden_actual == "precio_desc" %}
+        <option value="precio_desc" selected>Precio mayor a menor</option>
+        {% else %}
+        <option value="precio_desc">Precio mayor a menor</option>
+        {% endif %}
+        
+    </select>
+</form>
+
+
+<div class="catalogo-home">
+    <div class="container1 px-4" style="margin-top: 3rem;">
+        <div class="row">
+            {% for herramienta in herramientas %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 d-flex flex-column">
+                    {% if herramienta.imagen %}
+                    <img src="{{ herramienta.imagen.url }}" alt="Imagen" class="card-img-top">
+                    {% else %}
+                    <p>Sin Imagen</p>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ herramienta.nombre }}</h5>
+                        <p class="card-text">${{ herramienta.precio_clp }}</p>
+                        <div class="mt-auto">
+                            <a href="{% url 'herramienta_detalles' herramienta.id %}"
+                                class="btn btn-ver-producto w-100">
+                                Ver producto
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
