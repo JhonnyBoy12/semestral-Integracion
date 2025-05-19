@@ -21,7 +21,7 @@
         <a href="{% url 'catalogo' %}" class="btn btnuniversal">Seguir Comprando</a>
     </div>
 
-    {% if carrito.items %}
+    {% if carrito %}
     {% for key, value in carrito.items %}
     <div class="card mb-3 shadow-sm carrito-card">
         <div class="row g-0 align-items-center">
@@ -32,7 +32,7 @@
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <h5 class="fw-bold" style="color: #7d4807;">{{ value.nombre }}</h5>
-                        <p class="fw-bold mb-1">Precio: ${{ value.precio|floatformat:0|intcomma }}</p>
+                        <p class="fw-bold mb-1">Precio: {{ moneda }} {{ value.precio_convertido|floatformat:2|intcomma }}</p>   
                         <p class="fw-bold mb-0">
                             <a href="{% url 'disminuir_cantidad' key %}" class="btn btnuniversal btn-sm">-</a>
                             {{ value.cantidad }}
@@ -40,18 +40,31 @@
                         </p>
                     </div>
                     <div>
-                        <a href="{% url 'eliminar_producto' key %}"
-                            class="btn btn-danger btn-sm rounded-5 fw-bold">Eliminar</a>
+                        <a href="{% url 'eliminar_producto' key %}" class="btn btn-danger btn-sm rounded-5 fw-bold">Eliminar</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
-
     <div class="text-end mt-4">
-        <h4 class="fw-bold" style="color: #7d4807;">Total: ${{ total|floatformat:0|intcomma }}</h4>
+    <h4 class="fw-bold" style="color: #7d4807;">
+        Total en {{ moneda }}: {{ moneda }} {{ total_convertido|floatformat:2|intcomma }}
+    </h4>
+    <p class="fw-normal text-muted">Tasa de cambio: 1 {{moneda}} = {{ tasa }} {{ moneda }}</p>
     </div>
+
+    <form method="get" class="mt-3 d-flex align-items-center"  action="{% url 'carrito' %}">
+        <label for="currency" class="me-2">Ver total en:</label>
+        <select name="moneda" id="currency" class="form-select w-auto me-2">
+            <option value="PEN" {% if moneda == 'PEN' %}selected{% endif %}>PEN</option>
+            <option value="CLP" {% if moneda == 'CLP' %}selected{% endif %}>CLP</option>
+            <option value="USD" {% if moneda == 'USD' %}selected{% endif %}>USD</option>
+            <option value="EUR" {% if moneda == 'EUR' %}selected{% endif %}>EUR</option>
+            <option value="JPY" {% if moneda == 'JPY' %}selected{% endif %}>JPY</option>
+        </select>
+        <button type="submit" class="btn btnuniversal">Actualizar</button>
+    </form>
 
     <div class="text-end mt-3">
         <form action="{% url 'comprar' %}" method="post" class="d-inline">

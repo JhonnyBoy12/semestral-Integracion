@@ -8,6 +8,7 @@ from ordenes.models import Orden, ItemOrden
 from django.contrib import messages
 
 import stripe
+import requests 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -72,7 +73,47 @@ def vaciar_carrito(request):
 def ver_carrito(request):
     carrito = request.session.get('carrito', {})
     total = sum(item['precio'] * item['cantidad'] for item in carrito.values())
-    return render(request, 'carrito/carrito.html', {'carrito': carrito, 'total': total})
+
+    # Tasas de cambio fijas (de CLP a otras monedas)
+    tasas_cambio = {
+        'CLP': 1,
+        'USD': 0.0012,
+        'EUR': 0.0011,
+        'JPY': 0.15,
+        'PEN': 0.004,
+    }
+
+    # Obtener moneda seleccionada, por defecto CLP
+    moneda = request.GET.get('moneda', 'CLP').upper()
+    if moneda not in tasas_cambio:
+        moneda = 'CLP'  # fallback en caso no exista la moneda
+    request.session['moneda'] = moneda
+
+    tasa = tasas_cambio[moneda]
+    total_convertido = total * tasa
+    
+    carrito_convertido = {}
+    for key, item in carrito.items():
+        item_copiado = item.copy()
+        if moneda == 'CLP':
+            item_copiado['precio_convertido'] = item['precio']  # sin conversión
+        else:
+            item_copiado['precio_convertido'] = item['precio'] * tasa
+        carrito_convertido[key] = item_copiado
+
+    if moneda == 'CLP':
+        total_convertido = total
+    else:
+        total_convertido = total * tasa
+        
+    context = {
+        'carrito': carrito_convertido,
+        'total': total,
+        'moneda': moneda,
+        'tasa': tasa,
+        'total_convertido': round(total_convertido, 2)
+    }
+    return render(request, 'carrito/carrito.html', context)
 
 
 def exito(request):
@@ -130,24 +171,45 @@ def fallo(request):
 
 @login_required
 def comprar(request):
-    carrito = Carrito(request)
     items = request.session.get('carrito', {})
-    total = sum(item['precio'] * item['cantidad'] for item in items.values())
-
     if not items:
         return render(request, 'carrito/error.html', {'message': 'El carrito está vacío'})
 
+    moneda = request.session.get('moneda', 'CLP').lower()
+    monedas_permitidas = ['clp', 'usd', 'eur', 'jpy', 'pen']
+
+    if moneda not in monedas_permitidas:
+        moneda = 'clp'
+
+    tasas_cambio = {
+        'clp': 1,
+        'usd': 0.0012,
+        'eur': 0.0011,
+        'jpy': 0.15,
+        'pen': 0.004,
+    }
+
+    tasa = tasas_cambio.get(moneda, 1)
+    total_clp = sum(item['precio'] * item['cantidad'] for item in items.values())
+    total_convertido = total_clp * tasa
+
+    monedas_sin_decimales = ['jpy']
+
+    if moneda in monedas_sin_decimales:
+        unit_amount = int(round(total_convertido))
+    else:
+        unit_amount = int(round(total_convertido * 100))
+
     try:
-        # Crear la sesión de pago de Stripe
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
                 'price_data': {
-                    'currency': 'clp',
+                    'currency': moneda,
                     'product_data': {
                         'name': 'Compra en Ferremas',
                     },
-                    'unit_amount': int(total), 
+                    'unit_amount': unit_amount,
                 },
                 'quantity': 1,
             }],
@@ -159,4 +221,3 @@ def comprar(request):
 
     except stripe.error.CardError:
         return render(request, 'carrito/error.html', {'message': 'Error al procesar el pago con Stripe.'})
-
