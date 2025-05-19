@@ -48,13 +48,24 @@
                     <div>
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'bodeguero' %}">Inicio</a>
+                                <a class="nav-link" href="{% url 'bodeguero' %}">🧾 Pedidos por usuario</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{%url 'agregar_herramienta'%}">Agregar herramientas</a>
+                                <a class="nav-link" href="{% url 'consultarstock' %}">👁️ Ver stock</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{%url 'agregar_herramienta'%}">➕ Agregar herramientas</a>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Parte inferior: cerrar sesión si autenticado -->
+                    {% if user.is_authenticated %}
+                    <div class="text-center mt-4">
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger">Cerrar Sesión</a>
+                    </div>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from ordenes.models import Orden
 from .forms import HerramientaForm
 from autenticacion.decorators import bodeguero_required
+from django.contrib import messages
+
 
 
 @login_required
@@ -51,7 +53,7 @@ def agregarHerramienta(request):
         form = HerramientaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('bodeguero')
+            return redirect('consultarstock')
     else:
         form = HerramientaForm()
     
@@ -66,6 +68,7 @@ def editarHerramienta(request, herramienta_id):
     if request.method == 'POST':
         herramienta.nombre = request.POST.get('nombre')
         herramienta.precio = request.POST.get('precio')
+        herramienta.descripcion = request.POST.get('descripcion')
         herramienta.cantidad = request.POST.get('cantidad')
 
         if 'imagen' in request.FILES:
@@ -78,3 +81,22 @@ def editarHerramienta(request, herramienta_id):
         return render(request, 'bodeguero/editar_herramienta.html', {
             'herramienta': herramienta,
         })
+
+@login_required
+@bodeguero_required
+@require_http_methods(["POST"])
+def eliminarHerramienta(request, herramienta_id):
+    herramienta = get_object_or_404(Herramienta, pk=herramienta_id)
+    herramienta.delete()
+    messages.success(request, f'Herramienta "{herramienta.nombre}" eliminada correctamente.')
+    return redirect('bodeguero')
+
+@login_required
+@bodeguero_required
+def ver_stock_general(request):
+    herramientas = Herramienta.objects.all()
+
+    for herramienta in herramientas:
+        herramienta.precio_clp = "{:,}".format(herramienta.precio)
+
+    return render(request, 'bodeguero/consultarstock.html', {'herramientas': herramientas})

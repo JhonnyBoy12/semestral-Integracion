@@ -1,52 +1,58 @@
 {% extends "tiendaWeb/base.html" %}
+
 {% load static %}
+
 {% load humanize %}
 
 {% block content %}
-<div class="container-pedidos row" style="padding-top: 100px; padding-left: 200px; padding-right: 200px;">
+
+<link rel="stylesheet" href="{% static 'tiendaWeb/css/estilocarrito.css' %}">
+
+<div class="container-pedidos">
     <h2 class="h2-pedidos">Mis Pedidos</h2>
+
     {% if pedidos %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID Orden</th>
-                    <th>Fecha</th>
-                    <th>Total</th>
-                    <th>Cantidad de Herramientas</th>
-                    <th>Detalles</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for pedido in pedidos %}
-                    <tr>
-                        <td>{{ pedido.id }}</td>
-                        <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
-                        <td>${{ pedido.total_precio|floatformat:0|intcomma }}</td>
-                        <td>{{ pedido.cantidad_herramientas }}</td>
-                        <td>
-                            <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#detalle{{ pedido.id }}" aria-expanded="false" aria-controls="detalle{{ pedido.id }}">
+        <div class="tabla-pedidos">
+            <div class="tabla-header">
+                <div>ID Orden</div>
+                <div>Fecha</div>
+                <div>Total</div>
+                <div>Cantidad de Herramientas</div>
+                <div>Detalles</div>
+            </div>
+
+            {% for pedido in pedidos %}
+                <div class="carrito-card">
+                    <div class="info-pedido">
+                        <div>{{ pedido.id }}</div>
+                        <div>{{ pedido.fecha|date:"d/m/Y H:i" }}</div>
+                        <div>${{ pedido.total_precio|floatformat:0|intcomma }}</div>
+                        <div>{{ pedido.cantidad_herramientas }}</div>
+                        <div>
+                            <button class="btnuniversal btn-sm" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#detalle{{ pedido.id }}"
+                                    aria-expanded="false"
+                                    aria-controls="detalle{{ pedido.id }}">
                                 Ver Detalles
                             </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <div class="collapse" id="detalle{{ pedido.id }}">
-                                <div class="card card-body">
-                                    <ul>
-                                        {% for item in pedido.items.all %}
-                                            <li>{{ item.cantidad }} x {{ item.herramienta.nombre }} - ${{ item.precio|floatformat:0|intcomma }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+
+                    <div class="collapse mt-2" id="detalle{{ pedido.id }}">
+                        <div class="detalle-card">
+                            <ul>
+                                {% for item in pedido.items.all %}
+                                    <li>{{ item.cantidad }} x {{ item.herramienta.nombre }} - ${{ item.precio|floatformat:0|intcomma }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-        <div class="text-center mt-5 mb-5">
+        <div class="no-pedidos">
             <p>No tienes pedidos realizados.</p>
         </div>
     {% endif %}

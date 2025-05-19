@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Herramienta
+from django.db.models.functions import Lower
+
 
 # Crea tus vistas aqui.
 
@@ -28,9 +30,9 @@ def catalogo(request):
 
     # Ordenamiento
     if orden == 'nombre_asc':
-        herramientas = herramientas.order_by('nombre')
+        herramientas = herramientas.order_by(Lower('nombre'))
     elif orden == 'nombre_desc':
-        herramientas = herramientas.order_by('-nombre')
+        herramientas = herramientas.order_by(Lower('nombre').desc())
     elif orden == 'precio_asc':
         herramientas = herramientas.order_by('precio')
     elif orden == 'precio_desc':

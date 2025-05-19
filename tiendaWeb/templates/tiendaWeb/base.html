@@ -27,7 +27,7 @@
             </button>
 
             <!-- Título FERREMAS centrado -->
-            <a class="navbar-brand mx-auto fw-bold text-white text-center" href="#" id="divnavegador">FERREMAS</a>
+            <a class="navbar-brand mx-auto fw-bold text-white text-center" href="{% url 'home' %}" id="divnavegador">FERREMAS</a>
 
             <!-- Botón del carrito a la derecha -->
             <a href="{% url 'carrito' %}" class="btn btn-outline-success me-2 order-3" type="button">
@@ -69,9 +69,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'catalogo' %}">Catálogo</a>
                             </li>
+                            {% if user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'misPedidos' %}">Tus compras</a>
                             </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a href="{% url 'carrito' %}" class="nav-link">🛒 Carrito</a>
                             </li>
@@ -116,8 +118,10 @@
                     <ul class="list-unstyled">
                         <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Inicio</a></li>
                         <li><a href="{% url 'catalogo' %}" class="text-white text-decoration-none">Catálogo</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Política de privacidad</a></li>
+                        <li><a href="{% url 'carrito' %}" class="text-white text-decoration-none">Ver mi carrito</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'misPedidos' %}" class="text-white text-decoration-none">Ver mis compras</a></li>
+                        {% endif %}
                     </ul>
                 </div>
 

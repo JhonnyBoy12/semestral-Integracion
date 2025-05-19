@@ -10,36 +10,12 @@
 
 <link rel="stylesheet" href="{% static 'tiendaWeb/css/estilobodeguero.css' %}">
 
-<h1>PRODUCTOS Y STOCK DISPONIBLE</h1>
-
-<div class="catalogo">
-    <div class="container1 mt-3 px-4">
-        <div class="row justify-content-center">
-            {% for herramienta in herramientas %}
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                <div class="card h-100 d-flex flex-column">
-                    {% if herramienta.imagen %}
-                    <img src="{{ herramienta.imagen.url }}" alt="{{ herramienta.nombre }}" class="card-img-top">
-                    {% else %}
-                    <p>Sin Imagen Disponible</p>
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ herramienta.nombre }}</h5>
-                        <p class="card-text">${{ herramienta.precio_clp }}</p>
-                        <div class="mt-auto">
-                            <a href="{% url 'mostrar_stock' herramienta.id %}" class="btn btn-ver-producto w-100">Consultar Stock</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-
 <div class="container mt-5">
-    <h2>Órdenes por Usuario</h2>
+
+    <div style="display: flex; justify-content: center; margin-top: 5rem;">
+        <h1>PEDIDOS DE USUARIOS</h1>
+    </div>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -50,11 +26,11 @@
         </thead>
         <tbody>
             {% for usuario in usuarios %}
-            <tr>
+            <tr class="card-orden">
                 <td>{{ usuario.username }}</td>
                 <td>{{ usuario.email }}</td>
                 <td>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                    <button class="btn-ver-ordenes" type="button" data-bs-toggle="collapse"
                         data-bs-target="#ordenes{{ usuario.id }}" aria-expanded="false"
                         aria-controls="ordenes{{ usuario.id }}">
                         Ver Órdenes
@@ -67,12 +43,12 @@
                         {% if usuario.orden_set.all %}
                         <ul class="list-group mt-3">
                             {% for orden in usuario.orden_set.all %}
-                            <li class="list-group-item">
+                            <li class="card-orden">
                                 <strong>Orden ID:</strong> {{ orden.id }} |
                                 <strong>Fecha:</strong> {{ orden.fecha }} |
                                 <strong>Total:</strong> ${{ orden.total_precio|floatformat:0|intcomma }}
                                 <br>
-                                <button class="btn btn-sm btn-secondary mt-2" type="button" data-bs-toggle="collapse"
+                                <button class="btn-ver-ordenes" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#detallesOrden{{ orden.id }}" aria-expanded="false"
                                     aria-controls="detallesOrden{{ orden.id }}">
                                     Ver Detalles
@@ -81,7 +57,8 @@
                                     {% if orden.items.all %}
                                     <ul>
                                         {% for item in orden.items.all %}
-                                        <li>{{ item.cantidad }} x {{ item.herramienta.nombre }} - ${{item.precio_total|floatformat:0|intcomma }}</li>
+                                        <li>{{ item.cantidad }} x {{ item.herramienta.nombre }} -
+                                            ${{item.precio_total|floatformat:0|intcomma }}</li>
                                         {% endfor %}
                                     </ul>
                                     {% else %}
@@ -102,8 +79,8 @@
     </table>
 </div>
 {% if not request.user.is_authenticated or not request.user.profile.rol == 'bodeguero' %}
-    <script>
-        window.location.href = "{% url 'home' %}";
-    </script>
-    {% endif %}
+<script>
+    window.location.href = "{% url 'home' %}";
+</script>
+{% endif %}
 {% endblock %}

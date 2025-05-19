@@ -3,7 +3,6 @@ h1{
     color: #bd6c0a;
     text-align: start;
     margin-left: 2rem;
-    margin-top: 5rem;
     font-size: 2rem;
 }
 .card {
@@ -59,3 +58,61 @@ h1{
     background-color: #f8f9fa;
     padding: 1rem;
 }
+
+/* Quitar fondo a encabezado de tabla, mantener bold */
+.table thead th {
+    background-color: transparent !important;
+    font-weight: bold;
+    color: #000; /* Puedes ajustar si quieres un tono específico */
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Estilo para botones de "Ver Órdenes" y "Ver Detalles" */
+.btn-ver-ordenes {
+    background-color: #bd6c0a;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-ver-ordenes:hover {
+    background-color: #7d4807;
+    transform: translateY(-2px);
+}
+
+/* Estilo para las cards que muestran órdenes y detalles */
+.card-orden {
+    border-radius: 12px;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.card-orden:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Texto dentro de cards en negrita */
+.card-orden strong,
+.card-orden li,
+.card-orden p {
+    font-weight: bold;
+}
+
+/* Listado dentro de la orden */
+.card-orden ul {
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Corregir padding de collapse para que encaje con las cards */
+.collapse {
+    padding: 0;
+    background-color: transparent;
+}
+

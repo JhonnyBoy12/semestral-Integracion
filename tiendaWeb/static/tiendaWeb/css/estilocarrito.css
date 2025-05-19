@@ -35,3 +35,77 @@
     border-color: #7d4807 !important;
     color: white !important;
 }
+
+.container-pedidos {
+    padding: 100px 200px;
+}
+
+.h2-pedidos {
+    color: #bd6c0a;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.tabla-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    font-weight: bold;
+    background-color: #f5f5f5;
+    padding: 12px 16px;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+}
+
+.carrito-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 16px;
+}
+
+.carrito-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.info-pedido {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.detalle-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+.btnuniversal {
+    background-color: #bd6c0a;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.btnuniversal:hover {
+    background-color: #a35908;
+    color: white;
+}
+
+.no-pedidos {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 1.2rem;
+    color: #555;
+}
+

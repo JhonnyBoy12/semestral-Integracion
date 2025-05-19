@@ -1,6 +1,6 @@
 {% extends "tiendaweb/baseHome.html" %}
 
-{% block title %}Edicion Herramienta{% endblock %}
+{% block title %}Editar - {{ herramienta.nombre }}{% endblock %}
 
 {% block content %}
 
@@ -8,45 +8,51 @@
 
 {% load humanize %}
 
-<div class="container1 mt-5">
-        <div class="row" style="display: flex; justify-content: flex-start;">
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-            <a href="{% url 'bodeguero' %}" class="btn btn-secondary mb-3">← Volver al inicio</a>
-            <img src="{{ herramienta.imagen.url }}" alt="Imagen de Herramienta" class="card-img-top">
-            <h2>Stock de {{ herramienta.nombre }}</h2>
-            <p>Stock disponible: {{ herramienta.cantidad }} unidades</p>
-            <p>Precio: ${{ herramienta.precio }}</p>
-            <form action="{% url 'aumentar_stock' herramienta.id %}" method="POST">
+<link rel="stylesheet" href="{% static 'tiendaWeb/css/estilostock.css' %}">
+
+<div class="container-stock">
+    <div class="stock-card">
+        <a href="{% url 'bodeguero' %}" class="btn-volver">← Volver al inicio</a>
+        <img src="{{ herramienta.imagen.url }}" alt="Imagen de Herramienta" class="herramienta-img">
+        <h2 class="titulo-herramienta">Stock de {{ herramienta.nombre }}</h2>
+        <p class="info-stock"><strong>Descripción: </strong>{{ herramienta.descripcion }}</p>
+        <p class="info-stock"><strong>Stock disponible: </strong>{{ herramienta.cantidad }} unidades</p>
+        <p class="info-stock"><strong>Precio: </strong> ${{ herramienta.precio|floatformat:0|intcomma }}</p>
+
+        <form action="{% url 'eliminar_herramienta' herramienta.id %}" method="POST" style="margin-top: 1rem;"
+            onsubmit="return confirm('¿Estás seguro que quieres eliminar esta herramienta? Esta acción no se puede deshacer.')">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success">Aumentar Stock</button>
-            </form>
-            </div>
-        </div>
-        <div class="row" style="display: flex; justify-content: flex-end;">
-            <h2>Editar Herramienta</h2>
-            <form action="{% url 'editar_herramienta' herramienta.id %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %} 
-
-                <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" value="{{ herramienta.nombre }}" required><br><br>
-
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio" value="{{ herramienta.precio }}" step="0.01" required><br><br>
-
-                <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidad" value="{{ herramienta.cantidad }}" required><br><br>
-
-                <label for="imagen">Imagen:</label>
-                <input type="file" name="imagen"><br>
-                {% if herramienta.imagen %}
-                    <p>Imagen actual: <img src="{{ herramienta.imagen.url }}" width="120"></p>
-                {% endif %}
-                </select>
-                <button type="submit">Guardar Cambios</button>
-            </form>
-            
-        </div>
-        <ul>
+            <button type="submit" class="btn-eliminar">Eliminar Herramienta</button>
+        </form>
     </div>
+
+    <div class="editar-card">
+        <h2 class="titulo-editar">Editar: {{ herramienta.nombre }}</h2>
+        <form action="{% url 'editar_herramienta' herramienta.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" value="{{ herramienta.nombre }}" required>
+
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" value="{{ herramienta.precio }}" step="0.01" required>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" rows="4" required>{{ herramienta.descripcion }}</textarea>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad" value="{{ herramienta.cantidad }}" required>
+
+            <label for="imagen">Imagen:</label>
+            <input type="file" name="imagen">
+            {% if herramienta.imagen %}
+            <p class="imagen-actual">Imagen actual:</p>
+            <img src="{{ herramienta.imagen.url }}" width="120" class="imagen-preview">
+            {% endif %}
+
+            <button type="submit" class="btn-guardar">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
 
 {% endblock %}

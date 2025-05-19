@@ -1,0 +1,158 @@
+.container-stock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background-color: #ffffff;
+}
+
+.stock-card,
+.editar-card {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    transition: transform 0.3s ease;
+    position: relative;
+    padding-bottom: 4rem;
+}
+
+.stock-card:hover,
+.editar-card:hover {
+    transform: translateY(-5px);
+}
+
+.titulo-herramienta,
+.titulo-editar {
+    font-size: 1.8rem;
+    color: #bd6c0a;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.info-stock {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.herramienta-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1rem;
+    background-color: #bd6c0a;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #7d4807;
+    color: white;
+}
+
+.btn-accion,
+.btn-guardar {
+    background-color: #bd6c0a;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+
+}
+
+.btn-accion:hover,
+.btn-guardar:hover {
+    background-color: #7d4807;
+}
+
+.editar-card label {
+    font-weight: bold;
+    display: block;
+    margin-top: 1rem;
+}
+
+.editar-card input[type="text"],
+.editar-card input[type="number"],
+.editar-card input[type="file"] {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.imagen-actual {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.imagen-preview {
+    margin-top: 0.5rem;
+    border-radius: 8px;
+}
+
+.editar-card textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.btn-guardar {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background-color: #bd6c0a;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #7d4807;
+}
+
+.btn-eliminar {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-eliminar:hover {
+    background-color: #c9302c;
+}
