@@ -34,18 +34,32 @@
             </button>
 
             <!-- Título -->
-            <a class="navbar-brand mx-auto fw-bold text-white text-center" href="{% url 'bodeguero' %}"
-                id="divnavegador">FERREMAS: TRABAJADORES</a>
+            {% if user.profile.rol == 'admin' %}
+                <a class="navbar-brand mx-auto fw-bold text-white text-center" href="{% url 'bodeguero' %}" id="divnavegador">ADMIN DE FERREMAS</a>
+            {% else %}
+                <a class="navbar-brand mx-auto fw-bold text-white text-center" href="{% url 'bodeguero' %}" id="divnavegador">FERREMAS: TRABAJADORES</a>
+            {% endif %}
 
             <!-- Menú lateral -->
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú principal</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                        {% if user.profile.rol == 'admin' %}
+                            Menú Administrador
+                        {% else %}
+                            Menú Bodeguero
+                        {% endif %}
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
                 </div>
                 <div class="offcanvas-body d-flex flex-column justify-content-between">
                     <div>
+                        {% if user.profile.rol == 'admin' %}
+                                <div class="text-center">
+                                    <p class="textobienvenido">Sesion de ADMIN</p>
+                                </div> 
+                        {% endif %}
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'bodeguero' %}">🧾 Pedidos por usuario</a>
@@ -56,6 +70,17 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{%url 'agregar_herramienta'%}">➕ Agregar herramientas</a>
                             </li>
+                            {% if user.profile.rol == 'admin' %}
+                            <li class="nav-item mt-3 border-top pt-2">
+                                <h5 class="px-3" style="color: #bd6c0a;">Herramientas de Admin</h5>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-eye me-2"></i>Vista cliente</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'admin:index' %}"><i class="fas fa-cog me-2"></i>Admin Django</a>
+                                </li>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
 

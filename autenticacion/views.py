@@ -48,10 +48,16 @@ def iniciar_sesion(request):
                 request.session['token'] = token.key
 
                 perfil = Profile.objects.get(user=user)
+                
+                # Establecer flags de sesión según el rol
+                if perfil.rol in ['bodeguero', 'admin']:
+                    request.session['staff_access'] = True
+                
+                # Redirección según rol
                 if perfil.rol == 'bodeguero':
-                    # Redirige con un token de sesión único
-                    request.session['bodeguero_access'] = True
                     return redirect('bodeguero')
+                elif perfil.rol == 'admin':
+                    return redirect('bodeguero')  # O podrías redirigir a un dashboard específico
                 else:
                     return redirect('home')
             else:
