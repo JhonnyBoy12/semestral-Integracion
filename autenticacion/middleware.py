@@ -40,9 +40,4 @@ class BodegueroAccessMiddleware:
                 
             # Si pasa todas las verificaciones, permitir acceso
             return None
-        
-        # Para todas las demás rutas no públicas, verificar autenticación
-        if not request.user.is_authenticated:
-            return redirect('login')
-            
         return None
