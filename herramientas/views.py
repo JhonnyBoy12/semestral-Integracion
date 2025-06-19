@@ -79,7 +79,6 @@ def catalogo(request):
                 'precio': float(herramienta.precio),
                 'stock': herramienta.cantidad,
                 'imagen': request.build_absolute_uri(herramienta.imagen.url) if herramienta.imagen else None,
-                'categoria': herramienta.categoria.nombre if herramienta.categoria else None
             })
         return JsonResponse({
             'herramientas': herramientas_list,
